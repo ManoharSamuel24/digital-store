@@ -1,0 +1,178 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org" lang="en">-->
+<!--<head>-->
+<!--  <meta charset="UTF-8">-->
+<!--  <title>Register</title>-->
+<!--  <script>-->
+<!--    function isNumberKey(evt) {-->
+<!--      var charCode = (evt.which) ? evt.which : event.keyCode;-->
+<!--      if (charCode > 31 && (charCode < 48 || charCode > 57)) {-->
+<!--        return false;-->
+<!--      }-->
+<!--      return true;-->
+<!--    }-->
+<!--  </script>-->
+<!--</head>-->
+<!--<body>-->
+<!--<h1>Register Now</h1>-->
+<!--<form th:action="@{/register}" method="post">-->
+<!--  <label>Username:</label>-->
+<!--  <input type="text" name="username" placeholder="username" required>-->
+<!--  <br>-->
+
+<!--  <label>E-mail:</label>-->
+<!--  <input type="email" name="email" placeholder="email" required>-->
+<!--  <br>-->
+
+<!--  <label>Password:</label>-->
+<!--  <input type="password" name="password" placeholder="password" required>-->
+<!--  <br>-->
+
+<!--  <label>Phone Number:</label>-->
+<!--  <input type="tel" name="phone" placeholder="phone number" maxlength="10" pattern="\d{10}" required>-->
+<!--  <br>-->
+
+<!--  <label>Account Number:</label>-->
+<!--  <input type="number" name="account" placeholder="account number" maxlength="14" pattern="\d{14}" required>-->
+<!--  <br>-->
+
+<!--  <label>Bank Name:</label>-->
+<!--  <input type="text" name="bank" placeholder="bank name" required>-->
+<!--  <br>-->
+
+<!--  <label>4-digit PIN:</label>-->
+<!--  <input type="password" name="pin" placeholder="4-digit PIN" pattern="\d{4}" maxlength="4" onkeypress="return isNumberKey(event)" required>-->
+<!--  <br>-->
+
+<!--  <input type="submit" value="Register">-->
+<!--</form>-->
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Custom Styles -->
+    <style>
+        body {
+            background-color: #343a40;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .register-container {
+            background-color: #495057;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 900px;
+        }
+        .register-container h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-control {
+            background-color: #6c757d;
+            color: #fff;
+            border: 1px solid #495057;
+        }
+        .form-control:focus {
+            background-color: #adb5bd;
+            border-color: #adb5bd;
+        }
+        .btn-register {
+            width: 100%;
+        }
+        .login-link {
+            text-align: center;
+            margin-top: 10px;
+            color: #ced4da;
+        }
+        .login-link a {
+            color: #f8f9fa;
+        }
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 768px) {
+            .register-container {
+                padding: 20px;
+            }
+            .register-container h1 {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .register-container {
+                padding: 15px;
+            }
+            .register-container h1 {
+                font-size: 1.2rem;
+            }
+            .form-control {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="register-container">
+    <h1>Register Now</h1>
+    <form th:action="@{/register}" method="post">
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" name="username" id="username" placeholder="Enter your username" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="email" class="form-label">E-mail</label>
+                <input type="email" class="form-control" name="email" id="email" placeholder="Enter your email" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" name="password" id="password" placeholder="Enter your password" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="phone" class="form-label">Phone Number</label>
+                <input type="tel" class="form-control" name="phone" id="phone" placeholder="Enter your phone number" maxlength="10" pattern="\d{10}" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="account" class="form-label">Account Number</label>
+                <input type="number" class="form-control" name="account" id="account" placeholder="Enter your account number" maxlength="14" pattern="\d{14}" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="bank" class="form-label">Bank Name</label>
+                <input type="text" class="form-control" name="bank" id="bank" placeholder="Enter your bank name" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="pin" class="form-label">4-digit PIN</label>
+                <input type="password" class="form-control" name="pin" id="pin" placeholder="Enter a 4-digit PIN" pattern="\d{4}" maxlength="4" required>
+            </div>
+        </div>
+        <div class="mb-3">
+            <input type="submit" class="btn btn-primary btn-register" value="Register">
+        </div>
+    </form>
+    <div class="login-link">
+        Already registered? <a th:href="@{/login}">Login now</a>
+    </div>
+</div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+
+</body>
+</html>

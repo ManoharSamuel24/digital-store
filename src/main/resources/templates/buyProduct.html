@@ -1,0 +1,222 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org" lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Buy Product</title>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--<h2>Buy Product</h2>-->
+
+<!--&lt;!&ndash; Safely checking if product exists &ndash;&gt;-->
+<!--<div th:if="${product != null}">-->
+
+<!--    <h3 th:text="${product.productName}">Product Name</h3>-->
+<!--    <img th:src="@{${product.productImagePath}}" alt="Product Image" width="200" height="200">-->
+<!--    <p>Price: ₹<span th:text="${product.productPrice}">0</span></p>-->
+
+<!--    <form th:action="@{'/buy/' + ${product.id}}" method="post">-->
+<!--        <label>Bank Name:</label>-->
+<!--        <input type="text" th:value="${userBankName}" readonly><br><br>-->
+
+<!--        <label>Enter 4-digit PIN:</label>-->
+<!--        <input type="password" name="pin" pattern="\d{4}" maxlength="4" required><br><br>-->
+
+<!--        <button type="submit">Pay Now</button>-->
+
+<!--        <div th:if="${error != null}" style="color:red;" th:text="${error}"></div>-->
+<!--    </form>-->
+
+<!--</div>-->
+
+<!--&lt;!&ndash; If product is missing &ndash;&gt;-->
+<!--<div th:if="${product == null}">-->
+<!--    <p style="color:red;">Product details are missing or not loaded correctly.</p>-->
+<!--</div>-->
+
+<!--</body>-->
+<!--</html>-->
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buy Product</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"> <!-- Font Awesome Icons -->
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+        }
+        .sidebar {
+            background-color: #333;
+            position: fixed;
+            top: 0;
+            left: -250px;
+            width: 250px;
+            height: 100%;
+            transition: 0.3s;
+        }
+        .sidebar.active {
+            left: 0;
+        }
+        .sidebar .nav-link {
+            color: #ffffff;
+        }
+        .sidebar .nav-link:hover {
+            background-color: #575757;
+        }
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #444;
+        }
+        .sidebar-header h4 {
+            margin: 0;
+            color: #fff;
+        }
+        .main-content {
+            margin-left: 0;
+            transition: margin-left 0.3s;
+        }
+        .main-content.active {
+            margin-left: 250px;
+        }
+        .sidebar-close-btn {
+            color: #fff;
+            font-size: 25px;
+            cursor: pointer;
+        }
+
+        /* Hamburger button inside the header */
+        .hamburger-menu {
+            font-size: 30px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        /* Header adjustment for the hamburger menu */
+        header {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .hamburger-btn-container {
+            margin-right: 15px;
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <h4>Digital Store</h4>
+        <span class="sidebar-close-btn" id="closeSidebarBtn">&times;</span> <!-- Close Button -->
+    </div>
+    <div class="p-3">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link active" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">eBooks</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Music</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Photography</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Software</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+    <!-- Header with Hamburger Menu -->
+    <header class="bg-dark text-white py-3">
+        <div class="container d-flex justify-content-start align-items-center">
+            <!-- Hamburger Menu Button (left corner) -->
+            <button class="btn btn-dark hamburger-menu" id="hamburgerBtn">
+                <i class="fas fa-bars"></i> <!-- Hamburger icon -->
+            </button>
+            <h1 class="m-0">Digital Store</h1>
+        </div>
+    </header>
+
+    <div class="container-fluid">
+        <div class="row">
+
+            <!-- Product Section -->
+            <main class="col-md-12">
+                <h2 class="my-4">Buy Product</h2>
+
+                <!-- Safely checking if product exists -->
+                <div th:if="${product != null}">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h3 th:text="${product.productName}">Product Name</h3>
+                            <img th:src="@{${product.productImagePath}}" alt="Product Image" class="img-fluid" width="300" height="300">
+                            <p class="mt-3">Price: ₹<span th:text="${product.productPrice}">0</span></p>
+                        </div>
+                        <div class="col-md-6">
+                            <form th:action="@{'/buy/' + ${product.id}}" method="post">
+                                <label>Bank Name:</label>
+                                <input type="text" th:value="${userBankName}" readonly class="form-control mb-3">
+
+                                <label>Enter 4-digit PIN:</label>
+                                <input type="password" name="pin" pattern="\d{4}" maxlength="4" required class="form-control mb-3">
+
+                                <button type="submit" class="btn btn-primary btn-lg">Pay Now</button>
+
+                                <div th:if="${error != null}" style="color:red;" th:text="${error}" class="mt-3"></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- If product is missing -->
+                <div th:if="${product == null}">
+                    <p style="color:red;">Product details are missing or not loaded correctly.</p>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-3 mt-4">
+        <div class="container text-center">
+            <p>&copy; 2025 Digital Store. All rights reserved.</p>
+        </div>
+    </footer>
+</div>
+
+<!-- Optional: Add Bootstrap JS for responsiveness -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Custom JS for Hamburger Menu and Close Button -->
+<script>
+    document.getElementById('hamburgerBtn').addEventListener('click', function() {
+        document.getElementById('sidebar').classList.toggle('active');
+        document.querySelector('.main-content').classList.toggle('active');
+    });
+
+    document.getElementById('closeSidebarBtn').addEventListener('click', function() {
+        document.getElementById('sidebar').classList.remove('active');
+        document.querySelector('.main-content').classList.remove('active');
+    });
+</script>
+
+</body>
+</html>

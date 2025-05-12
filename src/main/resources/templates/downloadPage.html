@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Buy Product</title>
+</head>
+<body>
+<h2>Buy Product</h2>
+
+<h3 th:text="${product.productName}">Product Name</h3>
+<img th:src="@{${product.productImagePath}}" alt="Product Image" width="200">
+<p>Price: ₹<span th:text="${product.productPrice}">0</span></p>
+
+<form th:action="@{'/buy/' + ${product.id}}" method="post">
+    <label>Bank Name:</label>
+    <input type="text" th:value="${userBankName}" readonly><br><br>
+
+    <label>Enter 4-digit PIN:</label>
+    <input type="password" name="pin" pattern="\d{4}" maxlength="4" required><br><br>
+
+    <button type="submit">Pay Now</button>
+
+    <!-- Display error message if exists -->
+    <div th:if="${error}" style="color:red;" th:text="${error}"></div>
+</form>
+
+</body>
+</html>

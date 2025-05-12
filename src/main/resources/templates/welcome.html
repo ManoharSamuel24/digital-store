@@ -1,0 +1,370 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Welcome</title>-->
+<!--    <link rel="stylesheet" href="styles.css">-->
+<!--    <style>-->
+<!--        /* Container for product categories with horizontal scrolling */-->
+<!--        .product-category-container {-->
+<!--            display: flex;-->
+<!--            overflow-x: auto;-->
+<!--            gap: 20px;-->
+<!--            padding: 20px 0;-->
+<!--            scroll-snap-type: x mandatory;-->
+<!--            justify-content: start;-->
+<!--        }-->
+
+<!--        /* Each product container */-->
+<!--        .product-card {-->
+<!--            width: 180px;-->
+<!--            height: 250px;-->
+<!--            display: flex;-->
+<!--            flex-direction: column;-->
+<!--            align-items: center;-->
+<!--            justify-content: space-between;-->
+<!--            text-align: center;-->
+<!--            padding: 10px;-->
+<!--            border-radius: 8px;-->
+<!--            background-color: #f4f4f4;-->
+<!--            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);-->
+<!--            scroll-snap-align: center;-->
+<!--            margin-right: 50px;-->
+<!--        }-->
+
+<!--        .product-card img {-->
+<!--            width: 150px;-->
+<!--            height: 150px;-->
+<!--            object-fit: cover;-->
+<!--            border-radius: 8px;-->
+<!--            margin-bottom: 10px;-->
+<!--        }-->
+
+<!--        .product-name {-->
+<!--            font-size: 16px;-->
+<!--            font-weight: bold;-->
+<!--            color: #333;-->
+<!--        }-->
+
+<!--        .product-price {-->
+<!--            font-size: 14px;-->
+<!--            color: #888;-->
+<!--        }-->
+
+<!--        /* Style for the category header */-->
+<!--        .category-header {-->
+<!--            font-size: 24px;-->
+<!--            font-weight: bold;-->
+<!--            margin: 20px 0 10px;-->
+<!--            color: #333;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--<h1>Welcome, <span th:text="${username}"></span>!</h1>-->
+
+<!--<div th:if="${ebooks != null}">-->
+<!--    <h2 class="category-header">Ebooks</h2>-->
+<!--    <div class="product-category-container">-->
+<!--        <div th:each="product : ${ebooks}" class="product-card">-->
+<!--            <img th:src="@{${product.productImagePath}}" alt="Product Image">-->
+<!--            <div class="product-name" th:text="${product.productName}"></div>-->
+<!--            <div class="product-price" th:text="'₹ ' + ${product.productPrice}"></div>-->
+<!--            <a th:href="@{/buy/{id}(id=${product.id})}" class="btn">Buy Now</a>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<div th:if="${music != null}">-->
+<!--    <h2 class="category-header">Music</h2>-->
+<!--    <div class="product-category-container">-->
+<!--        <div th:each="product : ${music}" class="product-card">-->
+<!--            <img th:src="@{${product.productImagePath}}" alt="Product Image">-->
+<!--            <div class="product-name" th:text="${product.productName}"></div>-->
+<!--            <div class="product-price" th:text="'₹ ' + ${product.productPrice}"></div>-->
+<!--            <a th:href="@{/buy/{id}(id=${product.id})}" class="btn">Buy Now</a>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<div th:if="${photography != null}">-->
+<!--    <h2 class="category-header">Photography</h2>-->
+<!--    <div class="product-category-container">-->
+<!--        <div th:each="product : ${photography}" class="product-card">-->
+<!--            <img th:src="@{${product.productImagePath}}" alt="Product Image">-->
+<!--            <div class="product-name" th:text="${product.productName}"></div>-->
+<!--            <div class="product-price" th:text="'₹ ' + ${product.productPrice}"></div>-->
+<!--            <a th:href="@{/buy/{id}(id=${product.id})}" class="btn">Buy Now</a>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<div th:if="${software != null}">-->
+<!--    <h2 class="category-header">Software</h2>-->
+<!--    <div class="product-category-container">-->
+<!--        <div th:each="product : ${software}" class="product-card">-->
+<!--            <img th:src="@{${product.productImagePath}}" alt="Product Image">-->
+<!--            <div class="product-name" th:text="${product.productName}"></div>-->
+<!--            <div class="product-price" th:text="'₹ ' + ${product.productPrice}"></div>-->
+<!--            <a th:href="@{/buy/{id}(id=${product.id})}" class="btn">Buy Now</a>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Store</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #1e1e2f;
+            color: #f1f1f1;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .navbar {
+            background-color: #2c2c3c;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        .sidebar {
+            height: 100vh;
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: -250px;
+            background-color: #2c2c3c;
+            transition: all 0.3s;
+            z-index: 1000;
+            padding: 1rem;
+        }
+        .sidebar.show {
+            left: 0;
+        }
+        .sidebar a {
+            display: block;
+            padding: 0.5rem 0;
+            color: #f1f1f1;
+            text-decoration: none;
+        }
+        .search-bar {
+            max-width: 300px;
+        }
+        .product-category-container {
+            display: flex;
+            overflow-x: auto;
+            gap: 20px;
+            padding: 20px 0;
+            scroll-snap-type: x mandatory;
+        }
+        .product-card {
+            flex: 0 0 auto;
+            width: 180px;
+            background-color: #333;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+            scroll-snap-align: start;
+            transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 310px; /* fixed height for consistent layout */
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+        .btn {
+            background-color: #0d6efd;
+            color: white;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .btn:hover {
+            background-color: #0b5ed7;
+            transform: scale(1.05);
+        }
+        .category-header {
+            font-size: 1.5rem;
+            margin-top: 2rem;
+            color: #f1f1f1;
+        }
+
+        .product-category-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .product-category-container::-webkit-scrollbar-track {
+            background: #2c2c3c;
+            border-radius: 4px;
+        }
+
+        .product-category-container::-webkit-scrollbar-thumb {
+            background: #0d6efd;
+            border-radius: 4px;
+        }
+
+        .product-category-container::-webkit-scrollbar-thumb:hover {
+            background: #0b5ed7;
+        }
+
+
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-dark px-3">
+    <div class="d-flex align-items-center">
+        <i class="bi bi-list text-white fs-3 me-3" style="cursor:pointer" onclick="toggleSidebar()"></i>
+        <a class="navbar-brand" href="#">Digital Store</a>
+    </div>
+    <form class="d-flex search-bar">
+        <input class="form-control me-2" type="search" placeholder="Search..." aria-label="Search">
+    </form>
+</nav>
+
+<div class="sidebar" id="sidebar">
+    <div style="text-align: right;">
+        <i class="bi bi-x-lg" style="cursor:pointer; font-size: 1.2rem;" onclick="toggleSidebar()"></i>
+    </div>
+    <a href="#ebooks">Ebooks</a>
+    <a href="#music">Music</a>
+    <a href="#photography">Photography</a>
+    <a href="#software">Software</a>
+</div>
+
+<div class="container mt-4">
+    <h1 class="text-center">Welcome, <span th:text="${username}"></span>!</h1>
+
+    <!-- Ebooks -->
+    <div id="ebooks" th:if="${ebooks != null}">
+        <h2 class="category-header">Ebooks</h2>
+        <div class="product-category-container">
+            <div th:each="product : ${ebooks}" class="product-card">
+                <img th:src="@{${product.productImagePath}}" alt="Product Image">
+                <div>
+                    <div class="product-name" th:text="${product.productName}"></div>
+                    <div class="product-price mb-2" th:text="'₹ ' + ${product.productPrice}"></div>
+                </div>
+                <a th:href="@{/buy/{id}(id=${product.id})}" class="btn mt-auto">Buy Now</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Music -->
+    <div id="music" th:if="${music != null}">
+        <h2 class="category-header">Music</h2>
+        <div class="product-category-container">
+            <div th:each="product : ${music}" class="product-card">
+                <img th:src="@{${product.productImagePath}}" alt="Product Image">
+                <div>
+                    <div class="product-name" th:text="${product.productName}"></div>
+                    <div class="product-price mb-2" th:text="'₹ ' + ${product.productPrice}"></div>
+                </div>
+                <a th:href="@{/buy/{id}(id=${product.id})}" class="btn mt-auto">Buy Now</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Photography -->
+    <div id="photography" th:if="${photography != null}">
+        <h2 class="category-header">Photography</h2>
+        <div class="product-category-container">
+            <div th:each="product : ${photography}" class="product-card">
+                <img th:src="@{${product.productImagePath}}" alt="Product Image">
+                <div>
+                    <div class="product-name" th:text="${product.productName}"></div>
+                    <div class="product-price mb-2" th:text="'₹ ' + ${product.productPrice}"></div>
+                </div>
+                <a th:href="@{/buy/{id}(id=${product.id})}" class="btn mt-auto">Buy Now</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Software -->
+    <div id="software" th:if="${software != null}">
+        <h2 class="category-header">Software</h2>
+        <div class="product-category-container">
+            <div th:each="product : ${software}" class="product-card">
+                <img th:src="@{${product.productImagePath}}" alt="Product Image">
+                <div>
+                    <div class="product-name" th:text="${product.productName}"></div>
+                    <div class="product-price mb-2" th:text="'₹ ' + ${product.productPrice}"></div>
+                </div>
+                <a th:href="@{/buy/{id}(id=${product.id})}" class="btn mt-auto">Buy Now</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- About Section -->
+<section id="about" class="about-section py-5">
+    <div class="container text-center">
+        <h2 class="display-4 mb-4">Welcome to Digital Store</h2>
+        <p class="lead mb-4">Your one-stop shop for buying and downloading high-quality digital products. Explore our diverse collection of eBooks, Music, Photography, and Software, all available for instant download after purchase. Experience the future of digital shopping!</p>
+
+        <div class="row">
+            <div class="col-md-3">
+                <div class="product-category">
+                    <h4 class="text-uppercase mb-3">eBooks</h4>
+                    <p>Explore a world of knowledge and entertainment with our exclusive eBook collection. Instant access to your favorite books.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="product-category">
+                    <h4 class="text-uppercase mb-3">Music</h4>
+                    <p>Discover the latest music hits and timeless classics. Download your favorite tracks and enjoy them anytime, anywhere.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="product-category">
+                    <h4 class="text-uppercase mb-3">Photography</h4>
+                    <p>Find stunning high-resolution photographs to suit your needs, from professional stock images to breathtaking art photography.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="product-category">
+                    <h4 class="text-uppercase mb-3">Software</h4>
+                    <p>Access powerful software tools and applications. From productivity software to creative tools, get the software you need in seconds.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<footer class="text-center mt-5 py-3" style="background-color: #2c2c3c; color: #ccc;">
+    <div>&copy; 2025 Digital Store. All rights reserved.</div>
+</footer>
+
+
+<script>
+    function toggleSidebar() {
+        document.getElementById('sidebar').classList.toggle('show');
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

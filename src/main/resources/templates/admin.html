@@ -1,0 +1,155 @@
+<!-- File: admin.html (with dark table styling) -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #1e1e2f;
+            color: #f1f1f1;
+            font-family: 'Segoe UI', sans-serif;
+            padding: 30px;
+        }
+        .card {
+            background-color: #2c2c3c;
+            border: none;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            padding: 20px;
+            color: white;
+        }
+        .form-control, .form-select {
+            background-color: #444;
+            color: #fff;
+            border: 1px solid #666;
+        }
+        .form-control:focus, .form-select:focus {
+            background-color: #555;
+            color: #fff;
+        }
+        .table {
+            background-color: #1e1e2f;
+            color: #ddd;
+            border-color: #444;
+        }
+        .table thead {
+            background-color: #333;
+            color: #f1f1f1;
+        }
+        .table tbody tr:nth-child(even) {
+            background-color: #2b2b3a;
+        }
+        .table tbody tr:hover {
+            background-color: #3a3a4a;
+        }
+        .table td, .table th {
+            border: 1px solid #444;
+        }
+    </style>
+</head>
+<body>
+<div class="container" style="max-width: 960px;">
+    <h2 class="text-center mb-4">Admin Dashboard</h2>
+
+    <div class="card">
+        <h5>Add Product</h5>
+        <form th:action="@{/admin}" method="post" enctype="multipart/form-data" class="row g-3">
+            <div class="col-md-6">
+                <input type="text" class="form-control" name="productName" placeholder="Product Name" required>
+            </div>
+            <div class="col-md-6">
+                <select class="form-select" name="productType" required>
+                    <option value="">Select Type</option>
+                    <option value="EBOOK">Ebook</option>
+                    <option value="MUSIC">Music</option>
+                    <option value="PHOTOGRAPHY">Photography</option>
+                    <option value="SOFTWARE">Software</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label text-light">Upload Image</label>
+                <input type="file" class="form-control" name="imageFile" accept="image/*" required>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label text-light">Upload Product File</label>
+                <input type="file" class="form-control" name="productFile" required>
+            </div>
+            <div class="col-md-6">
+                <input type="number" step="0.01" name="productPrice" class="form-control" placeholder="Price" required>
+            </div>
+            <div class="col-md-6">
+                <button type="submit" class="btn btn-primary w-100">Add Product</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="card">
+        <h5>Remove Product</h5>
+        <form th:action="@{/admin/remove}" method="post" class="row g-3">
+            <div class="col-md-8"><input type="number" name="id" class="form-control" placeholder="Product ID to remove" required></div>
+            <div class="col-md-4"><button type="submit" class="btn btn-danger w-100">Remove</button></div>
+        </form>
+    </div>
+
+    <div class="card">
+        <h5>Get Product by ID</h5>
+        <form th:action="@{/admin/product}" method="get" class="row g-3">
+            <div class="col-md-8"><input type="number" name="id" class="form-control" placeholder="Enter Product ID" required></div>
+            <div class="col-md-4"><button type="submit" class="btn btn-info w-100">Search</button></div>
+        </form>
+        <div th:if="${productById != null}" class="mt-3">
+            <p><strong>Name:</strong> <span th:text="${productById.productName}"></span></p>
+            <p><strong>Type:</strong> <span th:text="${productById.productType}"></span></p>
+            <p><strong>Price:</strong> ₹<span th:text="${productById.productPrice}"></span></p>
+        </div>
+    </div>
+
+    <div class="card">
+        <h5>Get User by ID</h5>
+        <form th:action="@{/admin/user}" method="get" class="row g-3">
+            <div class="col-md-8"><input type="number" name="id" class="form-control" placeholder="Enter User ID" required></div>
+            <div class="col-md-4"><button type="submit" class="btn btn-info w-100">Search</button></div>
+        </form>
+        <div th:if="${userById != null}" class="mt-3">
+            <p><strong>Username:</strong> <span th:text="${userById.username}"></span></p>
+            <p><strong>Email:</strong> <span th:text="${userById.email}"></span></p>
+            <p><strong>Phone:</strong> <span th:text="${userById.phoneNumber}"></span></p>
+            <p><strong>Downloads:</strong> <span th:text="${userById.downloads}"></span></p>
+        </div>
+    </div>
+
+    <div class="card">
+        <h5>All Products</h5>
+        <table class="table table-bordered table-sm mt-2">
+            <thead><tr><th>ID</th><th>Name</th><th>Type</th><th>Price</th></tr></thead>
+            <tbody>
+                <tr th:each="p : ${products}">
+                    <td th:text="${p.id}"></td>
+                    <td th:text="${p.productName}"></td>
+                    <td th:text="${p.productType}"></td>
+                    <td th:text="${p.productPrice}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card">
+        <h5>All Users</h5>
+        <table class="table table-bordered table-sm mt-2">
+            <thead><tr><th>ID</th><th>Username</th><th>Email</th><th>Phone</th><th>Downloads</th></tr></thead>
+            <tbody>
+                <tr th:each="u : ${users}">
+                    <td th:text="${u.id}"></td>
+                    <td th:text="${u.username}"></td>
+                    <td th:text="${u.email}"></td>
+                    <td th:text="${u.phoneNumber}"></td>
+                    <td th:text="${u.downloads}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

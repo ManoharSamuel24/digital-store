@@ -1,0 +1,303 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org" lang="en">-->
+<!--<head>-->
+<!--  <meta charset="UTF-8">-->
+<!--  <title>Payment Success</title>-->
+<!--  <style>-->
+<!--    #loading-container {-->
+<!--        display: flex;-->
+<!--        flex-direction: column;-->
+<!--        align-items: center;-->
+<!--        justify-content: center;-->
+<!--        height: 100vh;-->
+<!--        font-size: 1.5em;-->
+<!--    }-->
+
+<!--    .loader {-->
+<!--        width: 50px;-->
+<!--        aspect-ratio: 1;-->
+<!--        display: grid;-->
+<!--        border-radius: 50%;-->
+<!--        background:-->
+<!--            linear-gradient(0deg ,rgb(0 0 0/50%) 30%,#0000 0 70%,rgb(0 0 0/100%) 0) 50%/8% 100%,-->
+<!--            linear-gradient(90deg,rgb(0 0 0/25%) 30%,#0000 0 70%,rgb(0 0 0/75%) 0) 50%/100% 8%;-->
+<!--        background-repeat: no-repeat;-->
+<!--        animation: l23 1s infinite steps(12);-->
+<!--        margin-bottom: 20px;-->
+<!--    }-->
+
+<!--    .loader::before,-->
+<!--    .loader::after {-->
+<!--        content: "";-->
+<!--        grid-area: 1/1;-->
+<!--        border-radius: 50%;-->
+<!--        background: inherit;-->
+<!--        opacity: 0.915;-->
+<!--        transform: rotate(30deg);-->
+<!--    }-->
+
+<!--    .loader::after {-->
+<!--        opacity: 0.83;-->
+<!--        transform: rotate(60deg);-->
+<!--    }-->
+
+<!--    @keyframes l23 {-->
+<!--        100% {-->
+<!--            transform: rotate(1turn)-->
+<!--        }-->
+<!--    }-->
+
+<!--    #content-container {-->
+<!--        display: none;-->
+<!--    }-->
+<!--  </style>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--<div id="loading-container">-->
+<!--  <div class="loader"></div>-->
+<!--  <p>Paying...</p>-->
+<!--</div>-->
+
+<!--<div id="content-container">-->
+<!--  <h2>Payment Successful!</h2>-->
+<!--  <p>Your payment was processed successfully.</p>-->
+
+<!--  <h3>Product Details</h3>-->
+<!--  <h4 th:text="${product.productName}">Product Name</h4>-->
+<!--  <img th:src="@{${product.productImagePath}}" alt="Product Image" width="200">-->
+<!--  <p>Price: ₹<span th:text="${product.productPrice}">0</span></p>-->
+
+<!--  <p>Your product is downloading...</p>-->
+
+<!--  <br>-->
+<!--  <a th:href="@{/welcome}">← Back to Home</a>-->
+
+<!--  &lt;!&ndash; Hidden download link &ndash;&gt;-->
+<!--  <a th:href="@{${product.productDownloadPath}}" id="download-link" style="display:none;" download></a>-->
+<!--</div>-->
+
+<!--<script>-->
+<!--  setTimeout(function () {-->
+<!--      document.getElementById('loading-container').style.display = 'none';-->
+<!--      document.getElementById('content-container').style.display = 'block';-->
+
+<!--      const link = document.getElementById('download-link');-->
+<!--      if (link) link.click();-->
+<!--  }, 3500);-->
+<!--</script>-->
+
+<!--</body>-->
+<!--</html>-->
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Success</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+  <style>
+    /* Loader animation styles */
+    #loading-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        font-size: 1.5em;
+    }
+
+    .loader {
+        width: 50px;
+        aspect-ratio: 1;
+        display: grid;
+        border-radius: 50%;
+        background:
+            linear-gradient(0deg, rgb(0 0 0/50%) 30%, #0000 0 70%, rgb(0 0 0/100%) 0) 50%/8% 100%,
+            linear-gradient(90deg, rgb(0 0 0/25%) 30%, #0000 0 70%, rgb(0 0 0/75%) 0) 50%/100% 8%;
+        background-repeat: no-repeat;
+        animation: l23 1s infinite steps(12);
+        margin-bottom: 20px;
+    }
+
+    .loader::before,
+    .loader::after {
+        content: "";
+        grid-area: 1/1;
+        border-radius: 50%;
+        background: inherit;
+        opacity: 0.915;
+        transform: rotate(30deg);
+    }
+
+    .loader::after {
+        opacity: 0.83;
+        transform: rotate(60deg);
+    }
+
+    @keyframes l23 {
+        100% {
+            transform: rotate(1turn)
+        }
+    }
+
+    #content-container {
+        display: none;
+    }
+
+    /* Sidebar styles */
+    #sidebar {
+        position: fixed;
+        top: 0;
+        left: -250px;
+        height: 100%;
+        width: 250px;
+        background-color: #111;
+        color: white;
+        padding-top: 60px;
+        transition: left 0.3s;
+        z-index: 1000;
+    }
+
+    #sidebar a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 25px;
+        color: white;
+        display: block;
+        transition: 0.3s;
+    }
+
+    #sidebar a:hover {
+        background-color: #575757;
+    }
+
+    #sidebar .close-btn {
+        position: absolute;
+        top: 20px;
+        right: 25px;
+        font-size: 36px;
+        color: white;
+    }
+
+    #sidebar.active {
+        left: 0;
+    }
+
+    /* Hamburger icon */
+    .hamburger-menu {
+        font-size: 30px;
+        cursor: pointer;
+        color: #fff;
+        display: none;
+    }
+
+    /* Responsive design - Show hamburger on smaller screens */
+    @media (max-width: 768px) {
+        .hamburger-menu {
+            display: block;
+        }
+
+        #content-container {
+            margin-left: 0;
+        }
+    }
+
+    /* Footer */
+    footer {
+        text-align: center;
+        padding: 1em;
+        background-color: #111;
+        color: white;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+    }
+
+    /* Make footer sticky at the bottom if content is short */
+    html, body {
+        height: 100%;
+    }
+
+    .wrapper {
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .content {
+        flex-grow: 1;
+    }
+
+  </style>
+</head>
+<body class="bg-dark text-light">
+
+<div class="wrapper">
+  <!-- Sidebar -->
+  <div id="sidebar">
+    <a href="javascript:void(0)" class="close-btn" onclick="toggleSidebar()">×</a>
+    <a href="#">Home</a>
+    <a href="#">Products</a>
+    <a href="#">Cart</a>
+    <a href="#">Orders</a>
+    <a href="#">Contact</a>
+  </div>
+
+  <!-- Hamburger Icon -->
+  <span class="hamburger-menu" onclick="toggleSidebar()">&#9776;</span>
+
+  <!-- Main Content -->
+  <div class="container py-5 content">
+    <div id="loading-container">
+      <div class="loader"></div>
+      <p>Paying...</p>
+    </div>
+
+    <div id="content-container">
+      <h2>Payment Successful!</h2>
+      <p>Your payment was processed successfully.</p>
+
+      <h3>Product Details</h3>
+      <h4 th:text="${product.productName}">Product Name</h4>
+      <img th:src="@{${product.productImagePath}}" alt="Product Image" width="200">
+      <p>Price: ₹<span th:text="${product.productPrice}">0</span></p>
+
+      <p>Your product is downloading...</p>
+
+      <br>
+      <a th:href="@{/welcome}" class="btn btn-primary">← Back to Home</a>
+
+      <!-- Hidden download link -->
+      <a th:href="@{${product.productDownloadPath}}" id="download-link" style="display:none;" download></a>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <p>&copy; 2025 Digital Store</p>
+</footer>
+
+<script>
+  // Function to toggle the sidebar
+  function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('active');
+  }
+
+  // Set a timeout to simulate payment success and trigger download
+  setTimeout(function () {
+      document.getElementById('loading-container').style.display = 'none';
+      document.getElementById('content-container').style.display = 'block';
+
+      const link = document.getElementById('download-link');
+      if (link) link.click();
+  }, 3500);
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
